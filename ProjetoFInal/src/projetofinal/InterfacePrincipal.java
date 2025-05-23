@@ -1,14 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package projetofinal;
 
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author rodrigues
+ * @author Guilherme Rodrigues e Rodrigo Pereira
  */
 public class InterfacePrincipal extends javax.swing.JFrame {
 
@@ -16,10 +11,14 @@ public class InterfacePrincipal extends javax.swing.JFrame {
      * Creates new form InterfacePrincipal
      */
      
-    boolean Disconect = false;
+    boolean Disconnect = false;
     
     public InterfacePrincipal() {
         initComponents();
+        disableMainSection();
+    }
+
+    private void disableMainSection() {
         Folder_Button.setEnabled(false);
         Download_Button.setEnabled(false);
         User_List.setEnabled(false);
@@ -28,6 +27,37 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         User_Label.setEnabled(false);
         Folder_Label2.setEnabled(false);
         Folder_Label.setEnabled(false);
+        
+        IP_Label.setEnabled(true);
+        IP_Field.setEnabled(true);
+        Port_Label.setEnabled(true);
+        Port_Field.setEnabled(true);
+        Name_Label.setEnabled(true);
+        Name_Field.setEnabled(true);
+        
+        Connection_Button.setText("Conectar");
+        Disconnect = false;
+    }
+
+    private void enableMainSection() {
+        Folder_Button.setEnabled(true);
+        Download_Button.setEnabled(true);
+        User_List.setEnabled(true);
+        File_List.setEnabled(true);
+        File_Label.setEnabled(true);
+        User_Label.setEnabled(true);
+        Folder_Label2.setEnabled(true);
+        Folder_Label.setEnabled(true);
+        
+        IP_Label.setEnabled(false);
+        IP_Field.setEnabled(false);
+        Port_Label.setEnabled(false);
+        Port_Field.setEnabled(false);
+        Name_Label.setEnabled(false);
+        Name_Field.setEnabled(false);
+        
+        Connection_Button.setText("Desconectar");
+        Disconnect = true;
     }
 
     /**
@@ -119,26 +149,28 @@ public class InterfacePrincipal extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(Name_Field)
-                        .addGap(18, 18, 18)
-                        .addComponent(Connection_Button)
+                        .addComponent(jScrollPane2)
                         .addGap(17, 17, 17))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(IP_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Name_Label)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(IP_Field, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                                .addComponent(Port_Label, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(Folder_Label2)
                             .addComponent(Folder_Button)
                             .addComponent(Folder_Label)
                             .addComponent(User_Label)
-                            .addComponent(Port_Field, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(29, 32, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(Name_Field, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(Connection_Button))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(IP_Field, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(IP_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(Port_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Port_Field, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(File_Label)
@@ -156,35 +188,34 @@ public class InterfacePrincipal extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(IP_Label)
-                    .addComponent(File_Label))
+                    .addComponent(File_Label)
+                    .addComponent(Port_Label))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(IP_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Port_Label)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Port_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(IP_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Port_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addComponent(Name_Label)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(Name_Field, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(Connection_Button))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(28, 28, 28)
                         .addComponent(Folder_Label2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Folder_Button)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(Folder_Label)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                        .addGap(29, 29, 29)
                         .addComponent(User_Label)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1))
                 .addGap(18, 18, 18)
                 .addComponent(Download_Button)
-                .addGap(16, 16, 16))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -192,7 +223,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -200,8 +231,8 @@ public class InterfacePrincipal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
@@ -225,54 +256,14 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         String name = Name_Field.getText();
         String port = Port_Field.getText();
         
-        
-        try{
-            if(Disconect)
-            {
-                Folder_Button.setEnabled(false);
-                Download_Button.setEnabled(false);
-                User_List.setEnabled(false);
-                File_List.setEnabled(false);
-                File_Label.setEnabled(false);
-                User_Label.setEnabled(false);
-                Folder_Label2.setEnabled(false);
-                Folder_Label.setEnabled(false);
-                
-                IP_Label.setEnabled(true);
-                IP_Field.setEnabled(true);
-                Port_Label.setEnabled(true);
-                Port_Field.setEnabled(true);
-                Name_Label.setEnabled(true);
-                Name_Field.setEnabled(true);
-                
-                Connection_Button.setText("Conectar");
-                Disconect = false;
-            }
-            else if(ip.isEmpty() || port.isEmpty() || name.isEmpty())
-            {
+        try {
+            if (Disconnect) {
+                disableMainSection();
+            } else if(ip.isEmpty() || port.isEmpty() || name.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Nome, IP e Porto não podem estar vazios.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
-            } 
-            else 
-            {
-                Folder_Button.setEnabled(true);
-                Download_Button.setEnabled(true);
-                User_List.setEnabled(true);
-                File_List.setEnabled(true);
-                File_Label.setEnabled(true);
-                User_Label.setEnabled(true);
-                Folder_Label2.setEnabled(true);
-                Folder_Label.setEnabled(true);
-                
-                IP_Label.setEnabled(false);
-                IP_Field.setEnabled(false);
-                Port_Label.setEnabled(false);
-                Port_Field.setEnabled(false);
-                Name_Label.setEnabled(false);
-                Name_Field.setEnabled(false);
-                
-                Connection_Button.setText("Desconectar");
-                Disconect = true;
+            } else {
+                enableMainSection();
             }
         } catch(Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao conectar: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
