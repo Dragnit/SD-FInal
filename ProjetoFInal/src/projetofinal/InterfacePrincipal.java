@@ -1,6 +1,14 @@
 package projetofinal;
 
+import java.io.File;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import javax.swing.JOptionPane;
+
+import java.util.Random;
+import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 
 /**
  * @author Guilherme Rodrigues e Rodrigo Pereira
@@ -10,9 +18,8 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     /**
      * Creates new form InterfacePrincipal
      */
-     
     boolean Disconnect = false;
-    
+
     public InterfacePrincipal() {
         initComponents();
         disableMainSection();
@@ -27,14 +34,14 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         User_Label.setEnabled(false);
         Folder_Label2.setEnabled(false);
         Folder_Label.setEnabled(false);
-        
+
         IP_Label.setEnabled(true);
         IP_Field.setEnabled(true);
         Port_Label.setEnabled(true);
         Port_Field.setEnabled(true);
         Name_Label.setEnabled(true);
         Name_Field.setEnabled(true);
-        
+
         Connection_Button.setText("Conectar");
         Disconnect = false;
     }
@@ -48,25 +55,61 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         User_Label.setEnabled(true);
         Folder_Label2.setEnabled(true);
         Folder_Label.setEnabled(true);
-        
+
         IP_Label.setEnabled(false);
         IP_Field.setEnabled(false);
         Port_Label.setEnabled(false);
         Port_Field.setEnabled(false);
         Name_Label.setEnabled(false);
         Name_Field.setEnabled(false);
-        
+
         Connection_Button.setText("Desconectar");
         Disconnect = true;
     }
-    
-    private void checkFolderSelection(){
+
+    private void checkFolderSelection() {
+        String folderPath = "";
+        // Using this process to invoke the constructor,
+        // JFileChooser points to user's default directory
+        JFileChooser j = new JFileChooser();
+        j.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        j.setDialogTitle("Select Folder");
+
+        int result = j.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File pasta = j.getSelectedFile();
+            folderPath = pasta.getAbsolutePath();
+            System.out.println("Pasta guardada: " + folderPath);
+            Folder_Label.setText(folderPath);
+        }
+
         String texto = Folder_Label.getText();
-        if(texto.equals("Sem pasta selecionada...")){
+        if (!texto.equals("Sem pasta selecionada...")) {
             Download_Button.setEnabled(true);
         }
+        
+        fileList(folderPath);
     }
+    private DefaultListModel<String> listModel = new DefaultListModel<>();
 
+    public void fileList(String folderPath) {
+        listModel.clear(); // limpa antes de adicionar novos
+        File_List.setModel(listModel); // garante que está ligado
+
+        File directory = new File(folderPath);
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    System.out.println("Arquivo: " + file.getName());
+                    listModel.addElement(file.getName()); // ADICIONA AO MODELO!
+                }
+            }
+        }
+    }  
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -250,6 +293,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void Port_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Port_FieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Port_FieldActionPerformed
@@ -261,23 +305,31 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     private void Download_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Download_ButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Download_ButtonActionPerformed
-    
+
     private void Connection_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Connection_ButtonActionPerformed
         // TODO add your handling code here:
         String ip = IP_Field.getText();
         String name = Name_Field.getText();
         String port = Port_Field.getText();
-        
+        int id = 0;
+
         try {
             if (Disconnect) {
                 disableMainSection();
-            } else if(ip.isEmpty() || port.isEmpty() || name.isEmpty()) {
+                Folder_Label.setText("Sem pasta selecionada...");
+                listModel.clear();
+            } else if (ip.isEmpty() || port.isEmpty() || name.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Nome, IP e Porto não podem estar vazios.", "Erro", JOptionPane.ERROR_MESSAGE);
                 return;
             } else {
-                enableMainSection();
+                //enableMainSection();
+                id = generateId();
+                System.out.println(id);
+                System.out.println(name);
+                System.out.println(port);
+                sendClientInfo(id, name);
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao conectar: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_Connection_ButtonActionPerformed
@@ -317,7 +369,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(InterfacePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        
+
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -346,4 +398,45 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
+
+    private int generateId() {
+        int id = 0;
+        Random generator = new Random();
+        id = generator.nextInt();
+        return id;
+    }
+
+    private void sendClientInfo(int id, String name) {
+        try {
+            URL url = new URL("http://localhost:8080/clientes"); // <- muda isto para o endpoint real do teu servidor
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+
+            // JSON a enviar
+            String jsonInput = String.format("{\"id\":\"%d\", \"nome\":\"%s\"}", id, name);
+
+            // Envia o JSON no body
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonInput.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
+                System.out.println("Connected!");
+                enableMainSection();
+            } else {
+                System.err.println("Failed to connect to the server. Code: " + responseCode);
+            }
+
+            conn.disconnect();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "No info sent to server: " + e.getMessage());
+        }
+    }
+
 }
