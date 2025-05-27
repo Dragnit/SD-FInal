@@ -41,7 +41,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
 
     private void enableMainSection() {
         Folder_Button.setEnabled(true);
-        Download_Button.setEnabled(true);
+        Download_Button.setEnabled(false);
         User_List.setEnabled(true);
         File_List.setEnabled(true);
         File_Label.setEnabled(true);
@@ -58,6 +58,13 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         
         Connection_Button.setText("Desconectar");
         Disconnect = true;
+    }
+    
+    private void checkFolderSelection(){
+        String texto = Folder_Label.getText();
+        if(texto.equals("Sem pasta selecionada...")){
+            Download_Button.setEnabled(true);
+        }
     }
 
     /**
@@ -82,11 +89,11 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         Name_Field = new javax.swing.JTextField();
         Name_Label = new javax.swing.JLabel();
         Folder_Label2 = new javax.swing.JLabel();
-        Folder_Button = new javax.swing.JButton();
         Folder_Label = new javax.swing.JLabel();
         File_Label = new javax.swing.JLabel();
         User_Label = new javax.swing.JLabel();
         Connection_Button = new javax.swing.JButton();
+        Folder_Button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -127,8 +134,6 @@ public class InterfacePrincipal extends javax.swing.JFrame {
 
         Folder_Label2.setText("Pasta a Partilhar:");
 
-        Folder_Button.setText("Selecionar Pasta");
-
         Folder_Label.setText("Sem pasta selecionada...");
 
         File_Label.setText("Ficheiros:");
@@ -142,6 +147,13 @@ public class InterfacePrincipal extends javax.swing.JFrame {
             }
         });
 
+        Folder_Button.setText("Selecionar Pasta");
+        Folder_Button.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Folder_ButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -152,10 +164,9 @@ public class InterfacePrincipal extends javax.swing.JFrame {
                         .addComponent(jScrollPane2)
                         .addGap(17, 17, 17))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Name_Label)
                             .addComponent(Folder_Label2)
-                            .addComponent(Folder_Button)
                             .addComponent(Folder_Label)
                             .addComponent(User_Label)
                             .addGroup(jPanel1Layout.createSequentialGroup()
@@ -169,7 +180,8 @@ public class InterfacePrincipal extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(Port_Label, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(Port_Field, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addComponent(Port_Field, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(Folder_Button))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -204,9 +216,9 @@ public class InterfacePrincipal extends javax.swing.JFrame {
                             .addComponent(Connection_Button))
                         .addGap(28, 28, 28)
                         .addComponent(Folder_Label2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(Folder_Button)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(Folder_Label)
                         .addGap(29, 29, 29)
                         .addComponent(User_Label)
@@ -249,7 +261,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     private void Download_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Download_ButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_Download_ButtonActionPerformed
-
+    
     private void Connection_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Connection_ButtonActionPerformed
         // TODO add your handling code here:
         String ip = IP_Field.getText();
@@ -273,6 +285,11 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     private void IP_FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IP_FieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_IP_FieldActionPerformed
+
+    private void Folder_ButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Folder_ButtonActionPerformed
+        // TODO add your handling code here:
+        checkFolderSelection();
+    }//GEN-LAST:event_Folder_ButtonActionPerformed
 
     /**
      * @param args the command line arguments
