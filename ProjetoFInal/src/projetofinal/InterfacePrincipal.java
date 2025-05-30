@@ -140,6 +140,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         Folder_Button = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jScrollPane1.setViewportView(File_List);
 
@@ -403,7 +404,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
     private int generateId() {
         int id = 0;
         Random generator = new Random();
-        id = generator.nextInt();
+        id = generator.nextInt(1000)+1;
         return id;
     }
 
@@ -411,14 +412,29 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         try {
             Client client = ClientBuilder.newClient();
             
-            Ligacao conn = new Ligacao(ip, port, id);
+            User user = new User("teste", "1", "pasta");
             
-            String URLBuilder = "http://" + ip + ":" + port + "/app/api/ads";
+            //Ligacao conn = new Ligacao(ip, port, id);
+            
+            String URLBuilder = "http://" + ip + ":" + port + "/ProjetoFinalServidor/app/api/ads";
             
             Response answer = client.target(URLBuilder)
                             .request()
                             .accept("application/json")
-                            .post(Entity.json(conn));
+                            .post(Entity.json(user));
+            
+            
+            
+            if (answer.getStatus() == 201) {
+                JOptionPane.showMessageDialog(null, "A", "a", JOptionPane.OK_OPTION);
+            } else {
+                String hello = answer.readEntity(String.class);
+                
+                System.out.println(hello);
+                JOptionPane.showMessageDialog(null, hello, "Erro", JOptionPane.OK_OPTION);
+                
+                
+            }
             
         } catch (Exception e) {
             e.printStackTrace();
