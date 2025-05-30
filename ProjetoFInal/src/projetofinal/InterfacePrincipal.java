@@ -1,14 +1,15 @@
 package projetofinal;
 
 import java.io.File;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import javax.swing.JOptionPane;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 
 import java.util.Random;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.Response;
 
 /**
  * @author Guilherme Rodrigues e Rodrigo Pereira
@@ -327,7 +328,7 @@ public class InterfacePrincipal extends javax.swing.JFrame {
                 System.out.println(id);
                 System.out.println(name);
                 System.out.println(port);
-                sendClientInfo(id, name);
+                sendClientInfo(id, ip, port, name);
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Erro ao conectar: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
@@ -406,33 +407,19 @@ public class InterfacePrincipal extends javax.swing.JFrame {
         return id;
     }
 
-    private void sendClientInfo(int id, String name) {
+    private void sendClientInfo(int id, String ip, String port, String name) {
         try {
-            URL url = new URL("http://localhost:8080/clientes"); // <- muda isto para o endpoint real do teu servidor
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setDoOutput(true);
-
-            // JSON a enviar
-            String jsonInput = String.format("{\"id\":\"%d\", \"nome\":\"%s\"}", id, name);
-
-            // Envia o JSON no body
-            try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = jsonInput.getBytes("utf-8");
-                os.write(input, 0, input.length);
-            }
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_CREATED) {
-                System.out.println("Connected!");
-                enableMainSection();
-            } else {
-                System.err.println("Failed to connect to the server. Code: " + responseCode);
-            }
-
-            conn.disconnect();
+            Client client = ClientBuilder.newClient();
+            
+            Ligacao conn = new Ligacao(ip, port, id);
+            
+            String URLBuilder = "http://" + ip + ":" + port + "/app/api/ads";
+            
+            Response answer = client.target(URLBuilder)
+                            .request()
+                            .accept("application/json")
+                            .post(Entity.json(conn));
+            
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "No info sent to server: " + e.getMessage());
